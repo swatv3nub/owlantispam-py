@@ -17,7 +17,7 @@ _permission_map = {
 }
 
 
-class SpamWatchType:
+class OwlAntiSpamType:
     def __str__(self) -> str:
         return f'<{self.__class__.__name__}: {self.__dict__}>'
 
@@ -25,7 +25,7 @@ class SpamWatchType:
         return self.__str__()
 
 
-class Token(SpamWatchType):
+class Token(OwlAntiSpamType):
     id: int
     permission: Optional[Permission]
     token: str
@@ -40,7 +40,7 @@ class Token(SpamWatchType):
         self.retired = retired
 
 
-class Ban(SpamWatchType):
+class Ban(OwlAntiSpamType):
     id: int
     reason: str
     date: datetime

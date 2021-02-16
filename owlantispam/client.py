@@ -10,9 +10,9 @@ from .types import Ban, Permission, Token
 
 
 class Client:
-    """Client to interface with the SpamWatch API."""
+    """Client to interface with the OwlAntiSpam API."""
 
-    def __init__(self, token: str, *, host: str = 'https://api.spamwat.ch') -> None:
+    def __init__(self, token: str, *, host: str = 'https://spamapi.bolverblitz.net/') -> None:
         """
         Args:
             token: The Authorization Token
@@ -28,14 +28,11 @@ class Client:
                       **kwargs: Dict[Any, Any]) -> Tuple[Union[Dict, str], Response]:
         """
         Make a request and handle errors
-
         Args:
             path: Path on the API without a leading slash
             method: The request method. Defaults to GET
             **kwargs: Keyword arguments passed to the request method.
-
         Returns: The json response and the request object
-
         """
         req = self._session.request(method, f'{self._host}/{path}',
                                     **kwargs)
@@ -65,9 +62,7 @@ class Client:
     def get_tokens(self) -> List[Token]:
         """Get all tokens
         Requires Root permission
-
         Returns: A list of Tokens
-
         """
         data, req = self._make_request('tokens')
         return [Token(**token) for token in data]
@@ -75,13 +70,10 @@ class Client:
     def create_token(self, userid: int, permission: Permission) -> Token:
         """Creates a token with the given parameters
         Requires Root permission
-
         Args:
             userid: The Telegram User ID of the token owner
             permission: The permission level the Token should have
-
         Returns: The created Token
-
         """
         data, req = self._make_request('tokens', method='post',
                                        json={"id": userid,
@@ -96,22 +88,17 @@ class Client:
     def get_token(self, token_id: int) -> Token:
         """Get a token using its ID
         Requires Root permission
-
         Args:
             token_id: The token ID
-
         Returns: The token
-
         """
         data, req = self._make_request(f'tokens/{token_id}')
         return Token(**data)
 
     def delete_token(self, token_id: int) -> None:
         """Delete a token using its ID
-
         Args:
             token_id: The id of the token
-
         """
         self._make_request(f'tokens/{token_id}', method='delete')
 
@@ -121,9 +108,7 @@ class Client:
     def get_bans(self) -> List[Ban]:
         """Get a list of all bans
         Requires Admin Permission
-
         Returns: A list of Bans
-
         """
         data, req = self._make_request('banlist')
         return [Ban(**ban) for ban in data]
@@ -141,7 +126,6 @@ class Client:
 
     def add_ban(self, user_id: int, reason: str, message: Optional[str] = None) -> None:
         """Adds a ban
-
         Args:
             user_id: ID of the banned user
             reason: Reason why the user was banned
@@ -157,7 +141,6 @@ class Client:
 
     def add_bans(self, data: List[Ban]) -> None:
         """Add a list of Bans
-
         Args:
             data: List of Ban objects
         """
@@ -167,12 +150,9 @@ class Client:
 
     def get_ban(self, user_id: int) -> Union[Ban, bool]:
         """Gets a ban
-
         Args:
             user_id: ID of the user
-
         Returns: Ban object or None
-
         """
         try:
             data, req = self._make_request(f'banlist/{user_id}')

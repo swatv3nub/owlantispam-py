@@ -6,11 +6,11 @@ from requests import Response
 from .types import Token
 
 
-class SpamWatchError(Exception):
+class OwlAntiSpamError(Exception):
     pass
 
 
-class Error(SpamWatchError):
+class Error(OwlAntiSpamError):
     def __init__(self, req: Response) -> None:
         self.status_code = req.status_code
         self.text = req.text
@@ -18,20 +18,20 @@ class Error(SpamWatchError):
         Exception.__init__(self, f'code: {self.status_code} body: `{self.text}` url: {self.url}')
 
 
-class UnauthorizedError(SpamWatchError):
+class UnauthorizedError(OwlAntiSpamError):
     pass
 
 
-class NotFoundError(SpamWatchError):
+class NotFoundError(OwlAntiSpamError):
     pass
 
 
-class Forbidden(SpamWatchError):
+class Forbidden(OwlAntiSpamError):
     def __init__(self, token: Token) -> None:
         Exception.__init__(self, f"Your tokens permission `{token.permission}` is not high enough.")
 
 
-class TooManyRequests(SpamWatchError):
+class TooManyRequests(OwlAntiSpamError):
     until: datetime
     method: str
 
